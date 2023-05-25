@@ -1,5 +1,10 @@
 # vue-bootstrap
 
+## Firebase
+```
+get firebase configs, place then under config.js
+
+```
 ## Project setup
 ```
 npm install

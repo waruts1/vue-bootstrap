@@ -2,17 +2,17 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3">
-        <Summary :totalExpenses="totalExpenses" :totalIncome="totalIncome" />
-      </div>
-      <!-- <div class="col-md-3">
-        <Summary />
+        <Summary :title="expenses" :totalExpenses="totalExpenses" :totalIncome="totalIncome" />
       </div>
       <div class="col-md-3">
-        <Summary />
+        <Summary :title="savings" :totalExpenses="totalSavings" :totalIncome="totalIncome" />
+      </div>
+       <div class="col-md-3">
+        <Summary :title="loans"/>
       </div>
       <div class="col-md-3">
-        <Summary />
-      </div> -->
+        <Summary :title="income" />
+      </div>
     </div>
   </div>
   <hr />
@@ -83,7 +83,7 @@
 
 <script>
 import { ref, onMounted , computed} from "vue";
-import { useStore} from "vuex";
+import { useStore, mapGetters} from "vuex";
 import TableExpenses from "@/components/TableExpenses";
 import Summary from "@/components/Summary";
 import { VueGoodTable } from 'vue-good-table';
@@ -112,21 +112,33 @@ export default {
       expense.value.date = "";
     };
     onMounted(async () => {
+      console.log(store.getters.expenses)
       store.dispatch("expenses/calculateTotalExpenses");
     });
+
     const totalExpenses = computed(() => {
-      return store.getters.totalExpenses;
+      return store.getters['expenses/totalExpenses'];
     });
 
     const chartData = computed(() => {
-      return store.getters.categoryTotals.map(category => category.label);
+      return store.getters['expenses/categoryTotals'].map(category => category.label);
     });
+
+    const totalSavings = computed(() => {
+      return store.getters['savings/totalSavings'];
+    });
+
     return {
       expense,
       submitExpense,
       totalExpenses,
       totalIncome: 1000,
-      chartData
+      chartData,
+      totalSavings,
+      savings : "Savings",
+      expenses : "Expenses",
+      loans:"Loans",
+      income : "income"
     };
   },
 };

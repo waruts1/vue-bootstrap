@@ -7,13 +7,12 @@
       
        
           <div>
-            {{ totalExpenses }}
             <div class="card-header">Welcome</div>
             <div class="card-body">
               <div class="alert alert-success" role="alert">
                 You are logged in!
                 {{ loggedIn }}
-                <div class="my-4" v-if="loggedIn.data">
+                <div class="my-4">
                   <button @click.prevent="signOut" class="btn btn-primary">
                     Log Out
                   </button>
@@ -61,15 +60,14 @@ export default {
       
     });
     const totalExpenses = computed(() => {
-      return store.getters.totalExpenses;
+      return store.getters['expenses/totalExpenses'];
     });
     onMounted(() => {
-      console.log(store);
-      store.getters.categoryTotals;
+      store.getters['expenses/categoryTotals'];
     })
 
     const signOut = async () => {
-      await store.dispatch("logOut");
+      await store.dispatch("user/logOut");
       router.push("/");
     };
 

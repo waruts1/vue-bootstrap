@@ -4,11 +4,15 @@ import { db } from "@/main";
 
   const state = {
     savings: [],
+    totalSavings :0
   };
   
   const mutations = {
     SET_SAVINGS(state, savings) {
       state.savings = savings;
+    },
+    SET_TOTAL_SAVINGS(state, totalAmount) {
+      state.totalSavings = totalAmount;
     },
     ADD_SAVING(state, saving) {
       state.savings.push(saving);
@@ -23,6 +27,19 @@ import { db } from "@/main";
       // Fetch savings from API or database and commit the mutations
       
       commit('SET_SAVINGS', savings);
+    },
+
+    async calculateTotalSavings ({ commit }) {
+      const querySnapshot = await getDocs(collection(db, 'savings'));
+      let totalAmount = 0;
+      querySnapshot.forEach((doc) => {
+        const expense = doc.data();
+        const amount = parseFloat(savings.amount);
+        if (!isNaN(amount)) {
+          totalAmount += expense.amount;
+        }
+        commit('SET_TOTAL_SAVINGS',totalAmount);
+      });  
     },
     async addSaving({ commit }, saving) {
       try {
@@ -43,8 +60,11 @@ import { db } from "@/main";
   const getters = {
     totalSavings(state) {
       //Compute and return the total savings based on state.savings
-      //Example: return state.savings.reduce((total, saving) => total + saving.amount, 0);
+      return state.savings.reduce((total, saving) => total + saving.amount, 0);
     },
+    // totalExpenses(state){
+    //   return state.totalExpenses;
+    // },
   };
 
 

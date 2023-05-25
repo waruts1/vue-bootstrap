@@ -27,20 +27,20 @@ import { db } from "@/main";
     }
   };
   const mutations = {
+    addExpense(state, loan) {
+      state.expenses.push(loan);
+    },
     SET_EXPENSES(state, expenses) {
       state.expenses = expenses;
-    },
-    SET_LOGGED_IN(state, value) {
-      state.user.loggedIn = value;
-    },
-    SET_USER(state, data) {
-      state.user.data = data;
     },
     SET_TOTAL_EXPENSES(state, totalAmount) {
       state.totalExpenses = totalAmount;
     },
     updateCategoryTotal(state, payload) {
       state.categoryTotals = { ...state.categoryTotals, ...payload };
+    },
+    deleteExpense(state, rowId) {
+      state.data = state.data.filter(row => row.id !== rowId);
     },
   };
   const actions = {
@@ -71,17 +71,10 @@ import { db } from "@/main";
       commit('updateCategoryTotal', categoryTotals);
     },
 
-    // categoryTotals: state => {
-    //   const categories = {}
-    //   state.expenses.forEach(expense => {
-    //     if (!categories[expense.category]) {
-    //       categories[expense.category] = expense.amount
-    //     } else {
-    //       categories[expense.category] += expense.amount
-    //     }
-    //   })
-    //   return Object.entries(categories).map(([label, value]) => ({ label, value }))
-    // },
+    deleteExpense({ commit, state }, rowId) {
+      // Perform any necessary validation or API calls
+      commit('deleteRow', rowId);
+    },
     async calculateTotalExpenses ({ commit }) {
       const querySnapshot = await getDocs(collection(db, 'expenses'));
       let totalAmount = 0;

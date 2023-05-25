@@ -1,11 +1,11 @@
 <template>
   <div class="card text-white bg-primary" style="max-width: 18rem;">
     <div class="card-header">
-      Summary
+      {{ title }}
     </div>
     <div class="card-body">
-      <p>Total Expenses: {{ totalExpenses }}</p>
-      <p>Average Expenses: {{ totalIncome }}</p>
+      <p>Total : {{ totalExpenses }}</p>
+      <p>Average : {{ totalIncome }}</p>
     </div>
   </div>
 </template>
@@ -21,6 +21,10 @@ export default {
     },
     totalIncome: {
       type: Number,
+      required: true,
+    },
+    title: {
+      type: String,
       required: true,
     },
   },
